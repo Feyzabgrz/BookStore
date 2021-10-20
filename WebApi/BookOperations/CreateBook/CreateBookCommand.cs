@@ -9,6 +9,7 @@ namespace WebApi.BookOperations.CreateBook
 {
     public class CreateBookCommand
     {
+        
         public CreateBookModel Model { get; set; }  //Bu modeli buraya set etmeliyimki buraya dolu bir şekilde gelsin
         private readonly BookStoreDbContext _dbContext;
 

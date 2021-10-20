@@ -11,6 +11,7 @@ using static WebApi.BookOperations.GetBookDetail.GetBookDetailQuery;
 using WebApi.BookOperations.UpdateBook;
 using static WebApi.BookOperations.UpdateBook.UpdateBookCommand;
 using WebApi.BookOperations.DeleteBook;
+using AutoMapper;
 
 namespace WebApi.AddControllers{
 
@@ -20,10 +21,13 @@ namespace WebApi.AddControllers{
     {
 
         private readonly BookStoreDbContext _context;
+        private readonly IMapper _mapper;
 
-        public BookController(BookStoreDbContext context)
+
+        public BookController(BookStoreDbContext context,IMapper mapper)
         {
             _context=context;
+            _mapper= mapper;
         }
         // private static List<Book> BookList =new List<Book>()
         // {
@@ -56,7 +60,7 @@ namespace WebApi.AddControllers{
         {
 
             //objeyle birlikte geri döndürmek istediğimizde IActionResult tipini kullanmamız gerekiyor.
-           GetBooksQuery query=new GetBooksQuery(_context);
+           GetBooksQuery query=new GetBooksQuery(_context,_mapper);
            var result =query.Handle();
            return Ok(result);
             
@@ -70,7 +74,7 @@ namespace WebApi.AddControllers{
             BookDetailViewModel result;
             try 
             {
-                GetBookDetailQuery query= new GetBookDetailQuery(_context);
+                GetBookDetailQuery query= new GetBookDetailQuery(_context,_mapper);
             query.BookId=id;
             result=query.Handle(); 
             }
@@ -97,7 +101,7 @@ namespace WebApi.AddControllers{
           [HttpPost]
           public IActionResult AddBook([FromBody] CreateBookModel newBook)
           {
-              CreateBookCommand command=new CreateBookCommand(_context);
+              CreateBookCommand command=new CreateBookCommand(_context,_mapper);
               try
               {
                 command.Model= newBook;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Common;
 using WebApi.DbOperations;
@@ -9,13 +10,16 @@ namespace WebApi.BookOperations.CreateBook
 {
     public class CreateBookCommand
     {
-        
+
         public CreateBookModel Model { get; set; }  //Bu modeli buraya set etmeliyimki buraya dolu bir şekilde gelsin
         private readonly BookStoreDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public CreateBookCommand(BookStoreDbContext dbContext)
+
+        public CreateBookCommand(BookStoreDbContext dbContext,IMapper mapper)
         {
             _dbContext=dbContext;
+            _mapper=mapper;
         }
 
         public void Handle()
@@ -28,11 +32,13 @@ namespace WebApi.BookOperations.CreateBook
 
               //Book entitysinden yeni bir book nesnesi yaratıp bunun fieldlarını
               //dışarıdan bir model aldık,benim contextim bir entity alıyo bu entity yaratıp daha sonra   onun fieldlarını gelen model içerisinden set ediyo olmam lazım
-              book=new Book();
-              book.Title=Model.Title;
-              book.PageCount=Model.PageCount;
-              book.PublishDate=Model.PublishDate;
-              book.GenreId=Model.GenreId;
+
+
+              book= _mapper.Map<Book>(Model) ;   //new Book();   //Buda demek ki model ile gelen veriti book nesnesine convert et
+            //   book.Title=Model.Title;         //Artık buraya ihtiyacımız olmayacak çünkü map edeceğiz mappingprofile sınıfından
+            //   book.PageCount=Model.PageCount;
+            //   book.PublishDate=Model.PublishDate;
+            //   book.GenreId=Model.GenreId;
 
               _dbContext.Books.Add(book);
               _dbContext.SaveChanges(); 

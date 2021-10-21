@@ -1,0 +1,19 @@
+using System;
+using FluentValidation;
+using WebApi.Application.GenreOperations.Queries.GetGenreDetailQuery;
+
+namespace WebApi.GenreOperations.Oueries.GetGenreDetail
+{
+    public class GetGenreDetailQueryValidator : AbstractValidator<GetGenreDetailQuery>
+    {
+        //constructor
+        public GetGenreDetailQueryValidator()
+        {
+             RuleFor(q=> q.GenreId).GreaterThan(0);
+
+            
+        }
+
+    }
+
+}

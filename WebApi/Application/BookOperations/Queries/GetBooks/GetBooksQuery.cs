@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Common;
 using WebApi.DbOperations;
+using WebApi.Entities;
 
 namespace WebApi.BookOperations.GetBooks
 {
@@ -24,7 +25,6 @@ namespace WebApi.BookOperations.GetBooks
             var bookList= _dbContext.Books.OrderBy(x=>x.Id).ToList<Book>();
 
             //elimizdeki booklisti artık bir view modele dönüştürmem lazım
-
             //burada bir liste dönüyoruz
 
             List<BooksViewModel> vm = _mapper.Map<List<BooksViewModel>>(bookList);
